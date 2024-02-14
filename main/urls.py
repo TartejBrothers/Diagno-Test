@@ -11,7 +11,7 @@ urlpatterns = [
     path("chatbot/", chatbot, name="chatbot"),
     path("", include("accounts.urls")),
     path("lung_index", lung_index, name="lung_index"),
-    path("pneumino/", pneumino_index, name="pneumino_index"),
+    path("pneumonia/", pneumino_index, name="pneumino_index"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

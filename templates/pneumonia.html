@@ -5,12 +5,18 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DiagnoTest</title>
+    <title>Diagno-Test</title>
     <!-- <link rel="stylesheet" href="{% static 'css/global.css' %}" /> -->
     <link rel="stylesheet" href="{% static 'css/home.css' %}" />
   </head>
 
   <body>
+    <div class="navbar">
+      <div class="navleft"><p>Diagno Test</p></div>
+      <div class="navright">
+        <a href="../home"><button>Home</button></a>
+      </div>
+    </div>
     <div class="header">
       <h1><span>Diagno Test</span></h1>
       <p>Pneumonia Detector</p>
@@ -50,12 +56,7 @@
           <li>File Name: <span class="name">{{ filename }}</span></li>
         </ul>
         <ul>
-          <li>
-            Pneumonia Percentage: <span class="name">{{ pneumonia }}</span>
-          </li>
-        </ul>
-        <ul>
-          <li>Normal Percentage: <span class="name">{{ normal }}</span></li>
+          <li>Condition: <span class="name">{{ prediction }}</span></li>
         </ul>
       </div>
     </div>

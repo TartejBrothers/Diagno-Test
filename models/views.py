@@ -274,13 +274,14 @@ def pneumino_index(request):
         preprocessed_custom_img = resized_custom_img.reshape(1, 224, 224, 3) / 255.0
 
         prediction = loaded_model.predict(preprocessed_custom_img)
-
-        # Display the prediction
         score = tf.nn.softmax(prediction[0])
         normal = f"{score[0]:.2%}"
 
         pneumonia = f"{score[1]:.2%}"
-
+        if normal > pneumonia:
+            condition = "Normal"
+        else:
+            condition = "Pneumonia"
         filename = _image
         return TemplateResponse(
             request,
@@ -289,8 +290,7 @@ def pneumino_index(request):
                 "message": message,
                 "filename": filename,
                 "image_url": fss.url(_image),
-                "pneumonia": pneumonia,
-                "normal": normal,
+                "prediction": condition,
             },
         )
 
