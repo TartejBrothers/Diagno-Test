@@ -27,8 +27,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "chat",
+    "widget_tweaks",
     "tailwind",
-    # "accounts",
+    "accounts",
+    "models",
 ]
 
 MIDDLEWARE = [
@@ -121,4 +123,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = "accounts.User"

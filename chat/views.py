@@ -1,16 +1,93 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseServerError
 from .forms import SymptomForm
-from nlpmodel.nlp import (
-    train_model,
-    get_symptoms_dict,
-    get_description_list,
-    get_precaution_dict,
-    tree_to_code,
-)
+import os
+from django.conf import settings
+from django.template.response import TemplateResponse
+from django.utils.datastructures import MultiValueDictKeyError
+from django.core.files.storage import FileSystemStorage
+import numpy as np
+import cv2
 import pandas as pd
+from keras.models import load_model  # Importing load_model from Keras
+import pickle
+
+# with open("svm_model.pkl", "rb") as file:
+#     loaded_model = pickle.load(file)
+
+# # Importing required functions from your nlp module
+# from nlpmodel.nlp import (
+#     train_model,
+#     get_symptoms_dict,
+#     get_description_list,
+#     get_precaution_dict,
+#     tree_to_code,
+# )
+
+# Load your trained model outside of the view function using Keras
+# loaded_model = load_model("svm_model.h5")
 
 
+# # Custom FileSystemStorage to ensure unique file names
+# class CustomFileSystemStorage(FileSystemStorage):
+#     def get_available_name(self, name, max_length=None):
+#         self.delete(name)
+#         return name
+
+
+# def index(request):
+#     message = ""
+#     prediction = ""
+#     fss = CustomFileSystemStorage()
+
+#     try:
+#         image = request.FILES["image"]
+#         _image = fss.save(image.name, image)
+
+#         path = os.path.join(settings.MEDIA_ROOT, _image)
+#         custom_img = cv2.imread(path, 0)  # Read the image in grayscale
+#         resized_custom_img = cv2.resize(custom_img, (200, 200))
+#         preprocessed_custom_img = (
+#             resized_custom_img.reshape(1, -1) / 255.0
+#         )  # Flatten and normalize the image
+
+#         # Make a prediction using the loaded model
+#         prediction = loaded_model.predict(preprocessed_custom_img)
+
+#         # Display the prediction
+#         print("The custom image is predicted as:", prediction[0])
+#         if prediction[0] == 0:
+#             condition = "No Tumour"
+#         else:
+#             condition = "Tumour"
+
+#         filename = _image
+#         return TemplateResponse(
+#             request,
+#             "index.html",
+#             {
+#                 "message": message,
+#                 "filename": filename,
+#                 "image_url": fss.url(_image),
+#                 "prediction": condition,
+#             },
+#         )
+
+#     except MultiValueDictKeyError:
+#         return TemplateResponse(
+#             request,
+#             "index.html",
+#             {"message": "No Image Selected"},
+#         )
+#     except Exception as e:
+#         return TemplateResponse(
+#             request,
+#             "index.html",
+#             {"message": str(e)},
+#         )
+
+
+# old code
 def predict_disease(request):
     if request.method == "POST":
         form = SymptomForm(request.POST)
@@ -157,5 +234,5 @@ def result_page(request):
 #         return render(request, "chat.html")
 
 
-def index(request):
-    return render(request, "index.html")
+# def index(request):
+#     return render(request, "index.html")

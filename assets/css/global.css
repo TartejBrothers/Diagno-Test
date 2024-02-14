@@ -2,11 +2,16 @@
 
 /* Base Styles */
 body {
-  background-color: #F0F0F0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  background-color: #f0f0f0;
 }
 
 h1 {
-  color: #5C2D91;
+  color: #5c2d91;
 }
 
 p {
@@ -75,7 +80,8 @@ p {
   left: 0;
   padding: 0.75rem;
   pointer-events: none;
-  transition: transform 0.15s ease-in-out, color 0.15s ease-in-out, opacity 0.15s ease-in-out;
+  transition: transform 0.15s ease-in-out, color 0.15s ease-in-out,
+    opacity 0.15s ease-in-out;
 }
 
 .form-control:focus {
@@ -95,11 +101,10 @@ p {
   border-color: #0056b3;
 }
 
-
 /* navbar */
 
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 16px;
   color: #333;
 }
@@ -128,6 +133,6 @@ body {
 
 .tyres-text {
   font-style: italic;
-  color: #A588BF;
+  color: #a588bf;
   font-weight: medium;
 }

@@ -5,13 +5,14 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grayscale To Colour</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <title>DiagnoTest</title>
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
   </head>
 
   <body>
     <div class="header">
-      <h1><span>Grayscale To Colour</span></h1>
+      <h1><span>Diagno Test</span></h1>
     </div>
 
     <form method="POST" enctype="multipart/form-data">
@@ -24,7 +25,7 @@
         id="file"
       />
       <button class="compress_image" type="submit" id="submitBtn">
-        Predict Fire
+        Predict Disease
       </button>
       <div class="status">
         <p id="message">{{ message }}</p>
@@ -46,6 +47,9 @@
       <div class="info_container">
         <ul>
           <li>File Name: <span class="name">{{ filename }}</span></li>
+        </ul>
+        <ul>
+          <li>Condition: <span class="name">{{ prediction }}</span></li>
         </ul>
       </div>
     </div>

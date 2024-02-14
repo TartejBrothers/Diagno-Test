@@ -28,8 +28,8 @@ creds.js
 *.tsv
 *.tsv.gz
 *.xlsx
-
-
+*.h5
+*.pkl
 # Mac/OSX
 .DS_Store
 /accounts/.DS_Store
@@ -188,3 +188,7 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Dataset
+/lung-segmentation/MontgomerySet
+lung-segmentation/files
