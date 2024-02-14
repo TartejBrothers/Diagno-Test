@@ -1,0 +1,12 @@
+<form method="post">
+  {% csrf_token %}
+  <label for="symptom">Enter your symptom:</label>
+  <input type="text" id="symptom" name="symptom" />
+  <br />
+  <label for="duration"
+    >How many days have you been experiencing this symptom?</label
+  >
+  <input type="number" id="duration" name="duration" />
+  <br />
+  <button type="submit">Get Prediction</button>
+</form>

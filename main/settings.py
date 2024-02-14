@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "chat",
     "tailwind",
-    "accounts",
+    # "accounts",
 ]
 
 MIDDLEWARE = [
