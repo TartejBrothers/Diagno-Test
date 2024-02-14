@@ -28,9 +28,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-    'accounts',
-    'chat'
+    "chat",
+    "accounts",
+    "tailwind",
+    
 ]
 
 MIDDLEWARE = [
@@ -63,7 +64,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "main.wsgi.application"
 
-
+ASGI_APPLICATION = "config.asgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 

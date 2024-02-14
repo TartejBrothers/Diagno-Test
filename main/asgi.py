@@ -16,7 +16,7 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/asgi/
 # application = get_asgi_application()
 
 
-# import os
+import os
 
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
@@ -32,6 +32,5 @@ django_asgi_app = get_asgi_application()
 application = ProtocolTypeRouter(
     {
         "http": django_asgi_app,
-        # We will add WebSocket protocol later. For now, it's just HTTP.
     }
 )
