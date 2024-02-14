@@ -258,3 +258,51 @@ def lung_index(request):
             "image_url": (fss.url(filename) if filename else ""),
         },
     )
+
+
+def pneumino_index(request):
+    message = ""
+    prediction = ""
+    fss = CustomFileSystemStorage()
+    loaded_model = load_model("pneumonia.h5")
+    try:
+        image = request.FILES["image"]
+        _image = fss.save(image.name, image)
+        path = os.path.join(settings.MEDIA_ROOT, _image)
+        custom_img = cv2.imread(path, cv2.IMREAD_COLOR)
+        resized_custom_img = cv2.resize(custom_img, (224, 224))
+        preprocessed_custom_img = resized_custom_img.reshape(1, 224, 224, 3) / 255.0
+
+        prediction = loaded_model.predict(preprocessed_custom_img)
+
+        # Display the prediction
+        score = tf.nn.softmax(prediction[0])
+        normal = f"{score[0]:.2%}"
+
+        pneumonia = f"{score[1]:.2%}"
+
+        filename = _image
+        return TemplateResponse(
+            request,
+            "pneumonia.html",
+            {
+                "message": message,
+                "filename": filename,
+                "image_url": fss.url(_image),
+                "pneumonia": pneumonia,
+                "normal": normal,
+            },
+        )
+
+    except MultiValueDictKeyError:
+        return TemplateResponse(
+            request,
+            "pneumonia.html",
+            {"message": "No Image Selected"},
+        )
+    except Exception as e:
+        return TemplateResponse(
+            request,
+            "pneumonia.html",
+            {"message": str(e)},
+        )

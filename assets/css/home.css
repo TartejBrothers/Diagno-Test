@@ -20,7 +20,13 @@ body {
 }
 .header h1 {
   color: #ee804d;
-  margin: 20px;
+  margin: 20px 20px 10px 20px;
+}
+.header p {
+  color: #6c757d;
+  margin-bottom: 40px;
+  text-align: center;
+  font-size: 30px;
 }
 input[type="file"]::file-selector-button {
   margin-right: 20px;

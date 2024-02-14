@@ -13,7 +13,7 @@
   <body>
     <div class="header">
       <h1><span>Diagno Test</span></h1>
-      <p>Brain Tumour Detector</p>
+      <p>Pneumonia Detector</p>
     </div>
 
     <form method="POST" enctype="multipart/form-data">
@@ -50,7 +50,12 @@
           <li>File Name: <span class="name">{{ filename }}</span></li>
         </ul>
         <ul>
-          <li>Condition: <span class="name">{{ prediction }}</span></li>
+          <li>
+            Pneumonia Percentage: <span class="name">{{ pneumonia }}</span>
+          </li>
+        </ul>
+        <ul>
+          <li>Normal Percentage: <span class="name">{{ normal }}</span></li>
         </ul>
       </div>
     </div>

@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from accounts import urls
-from models.views import index, lung_index, chatbot
+from models.views import index, lung_index, chatbot, pneumino_index
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -11,6 +11,7 @@ urlpatterns = [
     path("chatbot/", chatbot, name="chatbot"),
     path("", include("accounts.urls")),
     path("lung_index", lung_index, name="lung_index"),
+    path("pneumino/", pneumino_index, name="pneumino_index"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
