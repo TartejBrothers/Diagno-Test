@@ -13,6 +13,8 @@ from keras.models import load_model  # Importing load_model from Keras
 import pickle
 import tensorflow as tf
 from glob import glob
+import pickle as pkl
+import sklearn
 from tqdm import tqdm
 import tensorflow as tf
 from tensorflow.keras.utils import CustomObjectScope
@@ -304,5 +306,32 @@ def pneumino_index(request):
         return TemplateResponse(
             request,
             "pneumonia.html",
+            {"message": str(e)},
+        )
+
+
+def heart_index(request):
+    message = ""
+    prediction = ""
+    log_model = pkl.load(open("log_model.pkl", "rb"))
+    heart_data = pkl.load(open("heart_data.pkl", "rb"))
+    try:
+        if prediction == 1:
+            condition = "Chances of Heart Disease"
+        else:
+            condition = "No Heart Disease"
+        return TemplateResponse(
+            request,
+            "pneumonia.html",
+            {
+                "message": message,
+                "prediction": condition,
+            },
+        )
+
+    except Exception as e:
+        return TemplateResponse(
+            request,
+            "heart.html",
             {"message": str(e)},
         )
