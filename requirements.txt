@@ -9,10 +9,13 @@ certifi==2024.2.2
 cffi==1.16.0
 channels==4.0.0
 charset-normalizer==3.3.2
+config==0.5.1
 constantly==23.10.4
 cryptography==42.0.2
 daphne==4.1.0
+decouple==0.0.7
 Django==5.0.2
+django-config==0.1.4
 flatbuffers==23.5.26
 gast==0.5.4
 google-auth==2.27.0
@@ -35,6 +38,7 @@ opt-einsum==3.3.0
 packaging==23.2
 pandas==2.2.0
 protobuf==4.25.2
+psycopg2-binary==2.9.9
 pyasn1==0.5.1
 pyasn1-modules==0.3.0
 pycparser==2.21
@@ -49,6 +53,7 @@ scipy==1.12.0
 service-identity==24.1.0
 six==1.16.0
 sqlparse==0.4.4
+tailwind==3.1.5b0
 tensorboard==2.15.2
 tensorboard-data-server==0.7.2
 tensorflow==2.15.0
