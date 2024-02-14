@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot</title>
+    <style>
+      .chat-container {
+        height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Chatbot</h1>
+
+    <div class="chat-container" id="chat-container"></div>
+
+    <textarea
+      id="input-text"
+      placeholder="Type your message here..."
+    ></textarea>
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+      function sendMessage() {
+        var inputText = document.getElementById("input-text").value;
+        if (inputText.trim() !== "") {
+          appendMessage("You: " + inputText);
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/chatbot/", true);
+          xhr.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded"
+          );
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              var response = JSON.parse(xhr.responseText);
+              appendMessage("Chatbot: " + response.response);
+              document.getElementById("input-text").value = "";
+            }
+          };
+          xhr.send("input_text=" + inputText);
+        }
+      }
+
+      function appendMessage(message) {
+        var chatContainer = document.getElementById("chat-container");
+        var messageElement = document.createElement("div");
+        messageElement.textContent = message;
+        chatContainer.appendChild(messageElement);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+    </script>
+  </body>
+</html>
