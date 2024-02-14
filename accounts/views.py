@@ -40,7 +40,7 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None and user.is_active:
             login(request, user)
-            return redirect("brain/")
+            return redirect("home/")
         else:
             # Display warning message for login failure and redirect to login page
             messages.warning(request, "Something went wrong. Please check form errors")

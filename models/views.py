@@ -310,28 +310,89 @@ def pneumino_index(request):
         )
 
 
-def heart_index(request):
-    message = ""
-    prediction = ""
-    log_model = pkl.load(open("log_model.pkl", "rb"))
-    heart_data = pkl.load(open("heart_data.pkl", "rb"))
-    try:
-        if prediction == 1:
-            condition = "Chances of Heart Disease"
-        else:
-            condition = "No Heart Disease"
-        return TemplateResponse(
-            request,
-            "pneumonia.html",
-            {
-                "message": message,
-                "prediction": condition,
-            },
-        )
+from django.shortcuts import render
+from django.template.response import TemplateResponse
+import pickle as pkl
+from .models import HeartDiseasePrediction
 
-    except Exception as e:
-        return TemplateResponse(
-            request,
-            "heart.html",
-            {"message": str(e)},
-        )
+
+def heart_index(request):
+    if request.method == "POST":
+        try:
+            age = int(request.POST.get("age"))
+            sex = bool(int(request.POST.get("sex")))
+            cp = request.POST.get("cp")
+            trestbps = int(request.POST.get("trestbps"))
+            chol = int(request.POST.get("chol"))
+            fbs = bool(int(request.POST.get("fbs")))
+            restecg = request.POST.get("restecg")
+            thalach = int(request.POST.get("thalach"))
+            exang = bool(int(request.POST.get("exang")))
+            oldpeak = float(request.POST.get("oldpeak"))
+            slope = request.POST.get("slope")
+            ca = int(request.POST.get("ca"))
+            thal = request.POST.get("thal")
+
+            # Create a HeartDiseasePrediction object
+            heart_data = HeartDiseasePrediction.objects.create(
+                age=age,
+                sex=sex,
+                cp=cp,
+                trestbps=trestbps,
+                chol=chol,
+                fbs=fbs,
+                restecg=restecg,
+                thalach=thalach,
+                exang=exang,
+                oldpeak=oldpeak,
+                slope=slope,
+                ca=ca,
+                thal=thal,
+            )
+
+            # Load the machine learning model
+            log_model = pkl.load(open("log_model.pkl", "rb"))
+
+            # Make prediction
+            prediction = log_model.predict(
+                [
+                    [
+                        heart_data.age,
+                        heart_data.sex,
+                        heart_data.cp,
+                        heart_data.trestbps,
+                        heart_data.chol,
+                        heart_data.fbs,
+                        heart_data.restecg,
+                        heart_data.thalach,
+                        heart_data.exang,
+                        heart_data.oldpeak,
+                        heart_data.slope,
+                        heart_data.ca,
+                        heart_data.thal,
+                    ]
+                ]
+            )[0]
+
+            if prediction == 1:
+                condition = "Chances of Heart Disease"
+            else:
+                condition = "No Heart Disease"
+
+            return render(
+                request,
+                "heart.html",
+                {
+                    "message": "",
+                    "prediction": condition,
+                },
+            )
+
+        except Exception as e:
+            return render(
+                request,
+                "heart.html",
+                {"message": str(e)},
+            )
+    else:
+        return render(request, "heart.html")

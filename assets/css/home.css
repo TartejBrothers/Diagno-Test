@@ -21,6 +21,7 @@ body {
 .header h1 {
   color: #ee804d;
   margin: 20px 20px 10px 20px;
+  text-align: center;
 }
 .navbar {
   position: fixed;
@@ -47,7 +48,11 @@ body {
   border-radius: 10px;
   border: none;
   cursor: pointer;
-  transition: background 0.2s ease-in-out;
+  transition: all 0.5s ease;
+}
+.navright button:hover {
+  scale: 1.2;
+  transition: all 0.5s ease;
 }
 .header p {
   color: #6c757d;
