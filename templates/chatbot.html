@@ -1,79 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chatbot</title>
   </head>
   <body>
     <h1>Chatbot</h1>
-
-    <div id="chat-container">
-      <!-- Chat messages will be displayed here -->
-    </div>
-
-    <form id="chat-form">
-      <input
-        type="text"
-        id="input-text"
-        placeholder="Type your message here..."
-      />
+    <form method="POST" id="chatbot-form">
+      {% csrf_token %}
+      <input type="text" name="message" id="chatbot-message" />
       <button type="submit">Send</button>
     </form>
-
+    <div id="chatbot-response"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-      document
-        .getElementById("chat-form")
-        .addEventListener("submit", function (event) {
+      $(document).ready(function () {
+        $("#chatbot-form").submit(function (event) {
           event.preventDefault();
-          sendMessage();
-        });
-
-      function sendMessage() {
-        var inputText = document.getElementById("input-text").value;
-        if (inputText.trim() !== "") {
-          appendMessage("You: " + inputText);
-          fetch("/chatbot/", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              "X-CSRFToken": getCookie("csrftoken"), // Include CSRF token
+          var message = $("#chatbot-message").val();
+          $.ajax({
+            url: "/chatbot/",
+            type: "POST",
+            data: {
+              message: message,
+              csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
             },
-            body: "input_text=" + encodeURIComponent(inputText),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              appendMessage("Chatbot: " + data.response);
-              document.getElementById("input-text").value = "";
-            });
-        }
-      }
-
-      function appendMessage(message) {
-        var chatContainer = document.getElementById("chat-container");
-        var messageElement = document.createElement("div");
-        messageElement.textContent = message;
-        chatContainer.appendChild(messageElement);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      }
-
-      // Function to get CSRF token from cookies
-      function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie !== "") {
-          var cookies = document.cookie.split(";");
-          for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === name + "=") {
-              cookieValue = decodeURIComponent(
-                cookie.substring(name.length + 1)
-              );
-              break;
-            }
-          }
-        }
-        return cookieValue;
-      }
+            success: function (response) {
+              $("#chatbot-response").html(response.response);
+            },
+          });
+        });
+      });
     </script>
   </body>
 </html>

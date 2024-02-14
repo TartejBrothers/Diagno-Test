@@ -22,6 +22,89 @@ from .metrics import dice_loss, dice_coef, iou
 with open("svm_model.pkl", "rb") as file:
     loaded_model = pickle.load(file)
 
+from django.shortcuts import render
+from django.http import JsonResponse
+import nltk
+
+print("Downloading nltk packages")
+print(nltk.__version__)
+import ssl
+
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+nltk.download("punkt")
+nltk.download("wordnet")
+
+import random
+import numpy as np
+import json
+import pickle
+from nltk.stem import WordNetLemmatizer
+from tensorflow.keras.models import load_model
+
+lemmatizer = WordNetLemmatizer()
+
+with open("intents.json") as json_file:
+    intents = json.load(json_file)
+
+words = pickle.load(open("words.pkl", "rb"))
+classes = pickle.load(open("classes.pkl", "rb"))
+model = load_model("chatbotmodel.h5")
+
+
+def clean_up_sentence(sentence):
+    sentence_words = nltk.word_tokenize(sentence)
+    sentence_words = [lemmatizer.lemmatize(word) for word in sentence_words]
+    return sentence_words
+
+
+def bag_of_words(sentence):
+    sentence_words = clean_up_sentence(sentence)
+    bag = [0] * len(words)
+    for w in sentence_words:
+        for i, word in enumerate(words):
+            if word == w:
+                bag[i] = 1
+    return np.array(bag)
+
+
+def predict_class(sentence):
+    bow = bag_of_words(sentence)
+    res = model.predict(np.array([bow]))[0]
+    ERROR_THRESHOLD = 0.25
+    results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
+    results.sort(key=lambda x: x[1], reverse=True)
+    return_list = []
+    for r in results:
+        return_list.append({"intent": classes[r[0]], "probability": str(r[1])})
+    return return_list
+
+
+def get_response(intents_list, intents_json):
+    tag = intents_list[0]["intent"]
+    list_of_intents = intents_json["intents"]
+    result = "TMKCM Drift"
+    for i in list_of_intents:
+        if i["tag"] == tag:
+            result = random.choice(i["responses"])
+            break
+    return result
+
+
+def chatbot(request):
+    if request.method == "POST":
+        message = request.POST.get("message")
+        ints = predict_class(message)
+        res = get_response(ints, intents)
+        return JsonResponse({"response": res})
+    else:
+        return render(request, "chatbot.html")
+
+
 # Importing required functions from your nlp module
 from nlpmodel.nlp import (
     train_model,
@@ -101,6 +184,8 @@ def lung_index(request):
 
     H = 512
     W = 512
+    filename = ""  # Define filename outside the try-except block
+
     try:
         image = request.FILES["image"]
         _image = fss.save(image.name, image)
@@ -157,28 +242,19 @@ def lung_index(request):
             )
             cv2.imwrite(save_image_path, cat_image)
 
-        filename = _image
-        return TemplateResponse(
-            request,
-            "index.html",
-            {
-                "message": message,
-                "filename": filename,
-                "image_url": fss.url(_image),
-                # "result_image_url": result_image_url,
-                # "description_html": description_html,
-            },
-        )
+        filename = _image  # Assign the value of _image to filename if the try block executes successfully
 
     except MultiValueDictKeyError:
-        return TemplateResponse(
-            request,
-            "index.html",
-            {"message": "No Image Selected"},
-        )
+        message = "No Image Selected"
     except Exception as e:
-        return TemplateResponse(
-            request,
-            "index.html",
-            {"message": str(e)},
-        )
+        message = str(e)
+
+    return render(
+        request,
+        "index.html",
+        {
+            "message": message,
+            "filename": filename,
+            "image_url": (fss.url(filename) if filename else ""),
+        },
+    )

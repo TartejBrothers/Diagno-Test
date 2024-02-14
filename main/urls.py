@@ -3,13 +3,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from accounts import urls
-from models.views import index, lung_index
+from models.views import index, lung_index, chatbot
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", index, name="index"),
-    # path("chatbot", chatbot_view, name="chatbot"),
-    path("accounts/", include("accounts.urls")),
+    path("brain/", index, name="index"),
+    path("chatbot/", chatbot, name="chatbot"),
+    path("", include("accounts.urls")),
     path("lung_index", lung_index, name="lung_index"),
 ]
 if settings.DEBUG:

@@ -23,32 +23,6 @@ def create_dir(path):
         os.makedirs(path)
 
 
-def load_data(path, split=0.2):
-    images = sorted(glob(os.path.join(path, "CXR_png", "*.png")))
-    masks1 = sorted(glob(os.path.join(path, "ManualMask", "leftMask", "*.png")))
-    masks2 = sorted(glob(os.path.join(path, "ManualMask", "rightMask", "*.png")))
-
-    split_size = int(len(images) * split)
-
-    train_x, valid_x = train_test_split(images, test_size=split_size, random_state=42)
-    train_y1, valid_y1 = train_test_split(masks1, test_size=split_size, random_state=42)
-    train_y2, valid_y2 = train_test_split(masks2, test_size=split_size, random_state=42)
-
-    train_x, test_x = train_test_split(train_x, test_size=split_size, random_state=42)
-    train_y1, test_y1 = train_test_split(
-        train_y1, test_size=split_size, random_state=42
-    )
-    train_y2, test_y2 = train_test_split(
-        train_y2, test_size=split_size, random_state=42
-    )
-
-    return (
-        (train_x, train_y1, train_y2),
-        (valid_x, valid_y1, valid_y2),
-        (test_x, test_y1, test_y2),
-    )
-
-
 def load_data(path, split=0.1):
     images = sorted(glob(os.path.join(path, "CXR_png", "*.png")))
     masks1 = sorted(glob(os.path.join(path, "ManualMask", "leftMask", "*.png")))
@@ -151,21 +125,9 @@ if __name__ == "__main__":
     valid_dataset = tf_dataset(valid_x, valid_y1, valid_y2, batch=batch_size)
 
     """ Model """
-    model = build_unet((H, W, 3))
-    metrics = [dice_coef, iou, Recall(), Precision()]
-    model.compile(loss=dice_loss, optimizer=Adam(lr), metrics=metrics)
-
-    callbacks = [
-        ModelCheckpoint(model_path, verbose=1, save_best_only=True),
-        ReduceLROnPlateau(
-            monitor="val_loss", factor=0.1, patience=5, min_lr=1e-7, verbose=1
-        ),
-        CSVLogger(csv_path),
-    ]
-
-    model.fit(
-        train_dataset,
-        epochs=num_epochs,
-        validation_data=valid_dataset,
-        callbacks=callbacks,
+    # Load the pre-trained model instead of building a new one
+    model = tf.keras.models.load_model(
+        model_path,
+        custom_objects={"dice_loss": dice_loss, "dice_coef": dice_coef, "iou": iou},
     )
+    model.summary()
