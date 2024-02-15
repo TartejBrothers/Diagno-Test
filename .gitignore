@@ -30,7 +30,6 @@ creds.js
 *.xlsx
 *.h5
 *.pkl
-
 # Mac/OSX
 
 .DS_Store
