@@ -1,0 +1,9 @@
+<h1>Prediction Results</h1>
+<p>You may have: {{ predicted_disease }}</p>
+<p>Description: {{ description }}</p>
+<p>Recommended precautions:</p>
+<ul>
+  {% for precaution in precautions %}
+  <li>{{ precaution }}</li>
+  {% endfor %}
+</ul>

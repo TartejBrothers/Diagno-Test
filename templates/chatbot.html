@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatbot</title>
+  </head>
+  <body>
+    <h1>Chatbot</h1>
+    <form method="POST" id="chatbot-form">
+      {% csrf_token %}
+      <input type="text" name="message" id="chatbot-message" />
+      <button type="submit">Send</button>
+    </form>
+    <div id="chatbot-response"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#chatbot-form").submit(function (event) {
+          event.preventDefault();
+          var message = $("#chatbot-message").val();
+          $.ajax({
+            url: "/chatbot/",
+            type: "POST",
+            data: {
+              message: message,
+              csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+            },
+            success: function (response) {
+              $("#chatbot-response").html(response.response);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

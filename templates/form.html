@@ -1,0 +1,10 @@
+<form method="post">
+  {% csrf_token %}
+  <label for="symptom_input">Symptom:</label>
+  <input type="text" id="symptom_input" name="symptom_input" /><br /><br />
+
+  <label for="num_days">Number of Days:</label>
+  <input type="number" id="num_days" name="num_days" /><br /><br />
+
+  <button type="submit">Submit</button>
+</form>
