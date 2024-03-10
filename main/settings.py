@@ -74,7 +74,7 @@ DATABASES = {
     # }
 }
 
-# from .db import *
+from .db import *
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
