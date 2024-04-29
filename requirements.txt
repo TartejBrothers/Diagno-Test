@@ -13,7 +13,7 @@ click==8.1.7
 config==0.5.1
 constantly==23.10.4
 contourpy==1.2.0
-cryptography==42.0.2
+cryptography==42.0.4
 cvzone==1.6.1
 cycler==0.12.1
 daphne==4.1.0
@@ -91,3 +91,4 @@ urllib3==2.2.0
 Werkzeug==3.0.1
 wrapt==1.14.1
 zope.interface==6.1
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
