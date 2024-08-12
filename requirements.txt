@@ -43,7 +43,7 @@ matplotlib==3.8.2
 mediapipe==0.10.9
 metrics==0.3.3
 ml-dtypes==0.2.0
-nltk==3.8.1
+nltk==3.8.2
 numpy==1.26.4
 oauthlib==3.2.2
 opencv-contrib-python==4.9.0.80
