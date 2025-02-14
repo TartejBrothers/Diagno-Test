@@ -13,7 +13,7 @@ click==8.1.7
 config==0.5.1
 constantly==23.10.4
 contourpy==1.2.0
-cryptography==43.0.1
+cryptography==44.0.1
 cvzone==1.6.1
 cycler==0.12.1
 daphne==4.1.0
