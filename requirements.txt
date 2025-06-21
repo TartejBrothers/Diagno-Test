@@ -54,7 +54,7 @@ pandas==2.2.0
 pathlib2==2.3.7.post1
 pathspec==0.5.5
 pillow==10.2.0
-protobuf==3.20.3
+protobuf==4.25.8
 psycopg2-binary==2.9.9
 pyasn1==0.5.1
 pyasn1-modules==0.3.0
@@ -87,7 +87,7 @@ Twisted==23.10.0
 txaio==23.1.1
 typing_extensions==4.9.0
 tzdata==2024.1
-urllib3==2.2.2
+urllib3==2.5.0
 Werkzeug==3.0.1
 wrapt==1.14.1
 zope.interface==6.1
